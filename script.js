@@ -6,14 +6,34 @@ const yesBtn = document.querySelector(".js-yes-btn");
 const noBtn = document.querySelector(".js-no-btn");
 
 // /change the postion of no button
-noBtn.addEventListener("mouseover", () => {
-  const newX = Math.floor(Math.random() * questionContainer.offsetWidth);
-  const newY = Math.floor(Math.random() * questionContainer.offsetWidth);
+// change the position of no button (desktop + mobile friendly)
+function moveNoBtn() {
+  const containerRect = questionContainer.getBoundingClientRect();
 
+  const newX = Math.floor(
+    Math.random() * (containerRect.width - noBtn.offsetWidth)
+  );
+
+  const newY = Math.floor(
+    Math.random() * (containerRect.height - noBtn.offsetHeight)
+  );
+
+  noBtn.style.position = "absolute";
   noBtn.style.left = `${newX}px`;
   noBtn.style.top = `${newY}px`;
+}
+
+// desktop hover
+noBtn.addEventListener("mouseover", moveNoBtn);
+
+// mobile touch (prevents clicking)
+noBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  moveNoBtn();
 });
 
+// optional: better support for modern devices
+noBtn.addEventListener("pointerenter", moveNoBtn);
 // yes button functionality
 
 yesBtn.addEventListener("click", () => {
